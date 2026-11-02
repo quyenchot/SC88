@@ -182,7 +182,7 @@
             position: relative;
             display: block;
             width: 100%; 
-            margin-bottom: 20px;
+            margin-bottom: 40px;
             text-decoration: none;
         }
         .app-download-banner img {
@@ -216,15 +216,20 @@
             letter-spacing: 0.5px;
             display: block;
             white-space: nowrap;
+
         }
 
         .marcelo-section {
-            width: 100%;
-            margin-top: auto;
-            background-image: url('img_dlzc_bg2.avif');
-            background-size: cover;
-            background-position: center top;
-            background-repeat: no-repeat;
+            width: calc(100% + 40px );
+            margin-left: -20px;
+            margin-top: -10px;
+            position: relative;
+        }
+        .marcelo-section {
+            background-image: url('img_dlzc_bg2.avif'), url('img_slice_dlzc.jpg');
+            background-size: 100% 100%,100% 100%;
+            background-repeat: no-repeat,no-repeat;
+            background-position: 0px -315px,0px -10px;
             position: relative;
         }
 
