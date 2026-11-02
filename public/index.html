@@ -49,14 +49,14 @@
             width: 100%;
         }
 
-        .header { display: flex; align-items: center; position: relative; margin-bottom: 10px; height: 26px; }
+        .header { display: flex; align-items: center; position: relative; margin-bottom: 8px; height: 26px; }
         .header .back-btn { color: var(--primary); font-size: 22px; cursor: pointer; text-decoration: none; }
         
-        .brand-area { text-align: center; margin-bottom: 10px; }
+        .brand-area { text-align: center; margin-bottom: 10px; position: relative; }
         
-        .main-logo { height: 75px; object-fit: contain; margin-bottom: 10px; }
+        /* Thu nhỏ logo và căn giữa tuyệt đối chuẩn xác */
+        .main-logo { height: 58px; max-width: 100%; object-fit: contain; margin: 0 auto 8px auto; display: block; position: relative; left: -4px; }
         
-        /* Đã thu gọn khoảng cách phía dưới hàng chữ thương hiệu và chữ ký */
         .brand-text-row { display: flex; justify-content: space-between; align-items: center; padding: 0 5px; text-align: left; margin-bottom: 10px; }
         .brand-text strong { font-size: 14.5px; color: #000; line-height: 1.4; display: block; }
         .brand-text span { font-size: 13.5px; color: #555; }
@@ -69,7 +69,7 @@
             border-radius: 30px; 
             height: 44px; 
             padding: 0; 
-            margin-bottom: 15px; /* Thu gọn khoảng cách xuống form */
+            margin-bottom: 15px; 
             position: relative; 
             background: #fff;
             overflow: hidden;
