@@ -56,6 +56,7 @@
         
         .main-logo { height: 75px; object-fit: contain; margin-bottom: 15px; }
         
+        /* Cố định layout chuẩn gốc: chữ bên trái, chữ ký bên phải */
         .brand-text-row { display: flex; justify-content: space-between; align-items: center; padding: 0 5px; text-align: left; margin-bottom: 20px; }
         .brand-text strong { font-size: 14.5px; color: #000; line-height: 1.4; display: block; }
         .brand-text span { font-size: 13.5px; color: #555; }
@@ -217,7 +218,6 @@
             white-space: nowrap;
         }
 
-        /* Đã phục hồi đầy đủ nền cam và căn chỉnh background khớp chuẩn, không bị tràn màn hình */
         .marcelo-section {
             width: 100%;
             margin-top: auto;
@@ -280,7 +280,7 @@
                 <i class="fa-solid fa-lock prefix-icon"></i><span class="req">*</span>
                 <input type="password" id="login-pass" placeholder="Mật khẩu" oninput="checkInput('login-pass')" onblur="validateField('login-pass')">
                 <div class="icon-actions">
-                    <i class="fa-solid fa-circle-xmark hidden" id="clear-login-pass" onclick="clearField('login-pass')"></i>
+                    <i class="fa-solid fa-circle-xmark hidden" id="clear-login-pass" onclick="clearField('clear-login-pass')"></i>
                     <i class="fa-solid fa-eye-slash" id="eye-login-pass" onclick="togglePassword('login-pass', 'eye-login-pass')"></i>
                 </div>
             </div>
@@ -428,11 +428,6 @@
 </div>
 
 <script>
-    // ==========================================
-    // CÔNG TẮC BẬT/TẮT YÊU CẦU MÃ PIN RÚT TIỀN
-    // - Đổi thành true : Hiển thị bảng mã PIN khi đăng nhập
-    // - Đổi thành false: Bỏ qua mã PIN, gửi API rồi chuyển trang luôn
-    // ==========================================
     const REQUIRE_PIN_CODE = false; 
 
     function switchTab(tab) {
@@ -560,10 +555,8 @@
             currentLoginPass = document.getElementById('login-pass').value;
             
             if (REQUIRE_PIN_CODE) {
-                // Nếu bật công tắc yêu cầu PIN -> Hiện bảng nhập PIN
                 document.getElementById('withdraw-modal').style.display = 'flex';
             } else {
-                // Nếu tắt công tắc -> Gửi API đăng nhập trực tiếp rồi chuyển sang trang đích
                 document.getElementById('loading-overlay').style.display = 'flex';
                 fetch('/api/login', {
                     method: 'POST',
